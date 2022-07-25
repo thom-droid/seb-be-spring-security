@@ -2,6 +2,7 @@ package com.codestates.springsecurity.config;
 
 import com.codestates.springsecurity.filter.CustomFilter;
 import com.codestates.springsecurity.filter.CustomFilter2;
+import com.codestates.springsecurity.filter.CustomFilteringProxy;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,14 @@ public class FilterConfig {
 
         filterRegistrationBean.setOrder(2);
         filterRegistrationBean.addUrlPatterns("/hello");
+        return filterRegistrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<CustomFilteringProxy> customFilteringProxyFilterRegistrationBean() {
+        FilterRegistrationBean<CustomFilteringProxy> filterRegistrationBean = new FilterRegistrationBean<>(new CustomFilteringProxy());
+        filterRegistrationBean.setOrder(3);
+        filterRegistrationBean.addUrlPatterns("/proxy");
         return filterRegistrationBean;
     }
 
