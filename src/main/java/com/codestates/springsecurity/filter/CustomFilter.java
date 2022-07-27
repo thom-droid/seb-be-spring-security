@@ -1,13 +1,16 @@
 package com.codestates.springsecurity.filter;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.servlet.*;
 import java.io.IOException;
 
+@Slf4j
 public class CustomFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println(super.toString() + "is initiated");
+        log.info("initiated");
         Filter.super.init(filterConfig);
     }
 
@@ -18,6 +21,7 @@ public class CustomFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        log.info("filter1");
         System.out.println("first filter is working");
         System.out.println("here are some information");
         System.out.println("====================================");

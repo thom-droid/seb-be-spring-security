@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Slf4j
-@Component("loggingFilter")
+//@Component("loggingFilter")
 public class CustomFilteringProxy implements Filter {
 
     @Override
@@ -29,7 +29,7 @@ public class CustomFilteringProxy implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("spring proxy filter working on");
+        log.info("custom filtering proxy working");
         HttpServletRequest req = (HttpServletRequest) request;
         log.info("Request info : " + req);
         chain.doFilter(request, response);
