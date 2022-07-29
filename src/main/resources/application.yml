@@ -1,4 +1,14 @@
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 165597676599-s0g3bkr9v2fn8hj74iheikok1l85nsir.apps.googleusercontent.com
+            clientSecret: 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
+            scope:
+              - email
+              - profile
   h2:
     console:
       enabled: true

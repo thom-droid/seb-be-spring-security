@@ -1,12 +1,19 @@
 package com.codestates.springsecurity.index;
 
+import com.codestates.springsecurity.config.security.PrincipalDetails;
 import com.codestates.springsecurity.member.Member;
+import com.codestates.springsecurity.member.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.core.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -16,8 +23,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 
 @Slf4j
+@RequiredArgsConstructor
 @Controller
 public class IndexController {
+
+
+    private final PasswordEncoder passwordEncoder;
+    private final MemberRepository memberRepository;
 
     @GetMapping({"/", "/index"})
     public String index() {
@@ -49,6 +61,16 @@ public class IndexController {
         return "joinForm";
     }
 
+    @PostMapping("/join")
+    public @ResponseBody String join(@RequestBody Member member) {
+
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        member.setRole("ROLE_USER");
+        memberRepository.save(member);
+
+        return "signed up";
+    }
+
     @GetMapping("/test")
     public String test() {
         return "test";
@@ -74,4 +96,10 @@ public class IndexController {
         return "hello";
     }
 
+    @GetMapping("/login-test")
+    public @ResponseBody String loginTest(Authentication authentication) {
+        log.info("login test to get some incoming information after authentication with oauth");
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        return principalDetails.getMember().toString();
+    }
 }

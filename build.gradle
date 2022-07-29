@@ -29,6 +29,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'com.auth0:java-jwt:3.19.2'
 }
