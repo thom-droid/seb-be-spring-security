@@ -13,7 +13,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         MustacheViewResolver resolver = new MustacheViewResolver();
         resolver.setCharset("UTF-8");
         resolver.setContentType("text/html; charset=UTF-8");
-        System.out.println("setting encodingType");
         resolver.setPrefix("classpath:/templates/");
         resolver.setSuffix(".html");
 
