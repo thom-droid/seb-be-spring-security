@@ -8,7 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @Configuration
 public class SecurityConfig {
 
@@ -29,7 +29,10 @@ public class SecurityConfig {
                 .antMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER")
                 .and()
                 .formLogin()
-                .loginPage("/login");
+                .permitAll()
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/");
 
         return httpSecurity.build();
     }

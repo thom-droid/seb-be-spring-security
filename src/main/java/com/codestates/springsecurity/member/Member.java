@@ -1,6 +1,8 @@
 package com.codestates.springsecurity.member;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,8 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Member {
 
@@ -21,4 +25,8 @@ public class Member {
     private String role;
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    public Member(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }
