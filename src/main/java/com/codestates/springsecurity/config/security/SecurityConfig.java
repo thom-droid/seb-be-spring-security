@@ -8,8 +8,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
@@ -18,7 +24,14 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+
+        String idForEncode = "bcrypt";
+        Map<String, PasswordEncoder> encoders = new HashMap<>();
+        encoders.put("bcrypt", new BCryptPasswordEncoder());
+        encoders.put("pbkdf12", new Pbkdf2PasswordEncoder());
+        encoders.put("scrypt", new SCryptPasswordEncoder());
+        
+        return new DelegatingPasswordEncoder(idForEncode, encoders);
     }
 
     @Autowired
@@ -35,10 +48,9 @@ public class SecurityConfig {
                 .antMatchers("/user/**").authenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER")
-//                .antMatchers("/", "/index").permitAll()
+                .antMatchers("/", "/index").permitAll()
                 .antMatchers("/image/**").permitAll()
                 .antMatchers("/oauth2/**").permitAll()
-                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .permitAll()

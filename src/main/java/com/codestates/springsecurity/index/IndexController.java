@@ -31,10 +31,6 @@ import java.time.LocalDateTime;
 @Controller
 public class IndexController {
 
-
-    private final PasswordEncoder passwordEncoder;
-    private final MemberRepository memberRepository;
-
     @GetMapping({"/", "/index"})
     public String index() {
         return "index";
@@ -58,21 +54,6 @@ public class IndexController {
     @GetMapping("/login")
     public String login() {
         return "login";
-    }
-
-    @GetMapping("/join")
-    public String join() {
-        return "joinForm";
-    }
-
-    @PostMapping("/join")
-    public @ResponseBody String join(@RequestBody Member member) {
-
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
-        member.setRole("ROLE_USER");
-        memberRepository.save(member);
-
-        return "signed up";
     }
 
     @GetMapping("/test")
