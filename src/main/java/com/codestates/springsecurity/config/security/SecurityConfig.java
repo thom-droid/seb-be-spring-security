@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,7 +31,7 @@ public class SecurityConfig {
         encoders.put("bcrypt", new BCryptPasswordEncoder());
         encoders.put("pbkdf12", new Pbkdf2PasswordEncoder());
         encoders.put("scrypt", new SCryptPasswordEncoder());
-        
+
         return new DelegatingPasswordEncoder(idForEncode, encoders);
     }
 
@@ -43,7 +44,7 @@ public class SecurityConfig {
         httpSecurity.csrf().disable();
         httpSecurity.headers().frameOptions().disable();
 //        httpSecurity.addFilterAfter(new CustomFilteringProxy(), UsernamePasswordAuthenticationFilter.class);
-
+//        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.authorizeHttpRequests()
                 .antMatchers("/user/**").authenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
